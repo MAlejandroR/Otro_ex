@@ -10,35 +10,41 @@ and open the template in the editor.
         <title></title>
     </head>
     <body>
+
+        <form action="." method="post">
+            Operacion
+            <input type="text" name="operacion" id="">
+            <input type="submit" name="enviar" value="Enviar">
+        </form>
+
         <?php
-        require 'Operacion.php';
-        require 'OperacionRacional.php';
-        $operacion = "5+6/1";
-      //  $op1 = new Operacion("57asfasdfa6");
-        
-        echo ("tipo de operacon");
-        
-        if (Operacion::tipoOperacion($op1) == Operacion::RACIONAL){
-            $op1 = new OperacionRacional ( $operacion);
-            $op2 = new OperacionRacional ( $operacion);
-            
+        if ($_POST['enviar'] ){
+            require 'Operacion.php';
+            require 'OperacionRacional.php';
+            require 'OperacionReal.php';
+            $operacionCadena = $_POST['operacion'];
+            //  $op1 = new Operacion("57asfasdfa6");
+
+
+
+
+
+            echo ("tipo de operacon");
+
+            if (Operacion::tipoOperacion($operacionCadena) == Operacion::RACIONAL) {
+                $operacionNum = new OperacionRacional($operacionCadena);
+            } else {
+                $operacionNum = new OperacionReal($operacionCadena);
+            }
+
+            echo "$operacionNum = " . $operacionNum->opera() . "<br />";
+            //Mostramos los valores de la opearion
+            echo $operacionNum->getOp1() . "<br />";
+            echo $operacionNum->getOp2() . "<br />";
+            echo $operacionNum->getOperador() . "<br />";
+            echo $operacionNum->getTipo() . "<br />";
+            echo "Resultado " . $operacionNum->opera();
         }
-        else{
-            $op1 =   $op1->getOp1();
-            $op2 = ( $op1->getOp2());
-        }
-        
-        
-            
-        
-        
-        echo $op1->getOp1()."<br />";
-        echo $op1->getOp2()."<br />";
-        echo $op1->getOperador()."<br />";
-        echo $op1->getTipo()."<br />";
-        echo "Resultado ".$op1->opera();
-        
-        
         ?>
     </body>
 </html>

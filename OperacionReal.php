@@ -37,6 +37,8 @@ class OperacionReal extends Operacion {
         }
         return $resultado;
     }
-
+public function __toString() {
+    return "$this->op1 $this->operador $this->op2";
+}
     //put your code here
 }

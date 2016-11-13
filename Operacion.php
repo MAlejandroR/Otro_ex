@@ -15,11 +15,26 @@ abstract class Operacion {
 
     public static function tipoOperacion($operacion) {
         
+        $numReal = '[0-9]+(\.[0-9]*)?';
+        $op = '[\+|\-|\*|\/]';
+
+        $exp = "/^$numReal$op$numReal$/";
+        if (preg_match($exp, $operacion)) {
+            self::$tipo = Operacion::REAL;
+            return Operacion::REAL;
+        } else {
+            self::$tipo = Operacion::RACIONAL;
+
+
+            return Operacion::RACIONAL;
+        }
+
+
+
         //if (ereg("\[09][+-*/][09]\\", $operacion))
         //    return self::REAL;
-       // else
-       // */
-            return self::RACIONAL;
+        // else
+        // */
     }
 
     public function __construct($operacion) {
@@ -81,42 +96,42 @@ abstract class Operacion {
     }
 
     abstract public function opera();
-            
-/*
- * if ($this->tipo == $this::RACIONAL) {
-            $op1 = new Racional($this->op1);
-            $op2 = new Racional($this->op2);
-            switch ($this->operador) {
-                case '+':
-                    $resultado = $op1->sumar($op2);
-                    break;
-                case '-':
-                    $resultado = $op1->restar($op2);
-                    break;
-                case '*':
-                    $resultado = $op1->multiplicar($op2);
-                    break;
-                case '/':
-                    $resultado = $op1->dividir($op2);
-                    break;
-            }
-        } else {
-            switch ($this->operador {
-                case '+':
-                    $resultado = $this->op1 + $this->op2;
-                    break;
-                case '-':
-                    $resultado = $this->op1 - $this->op2;
-                    break;
-                case '*':
-                    $resultado = $this->op1 * $this->op2;
-                    break;
-                case '/':
-                    $resultado = $this->op1 / $this->op2;
-                    break;
-            }
-        }
-        return $resultado;
 
- */
+    /*
+     * if ($this->tipo == $this::RACIONAL) {
+      $op1 = new Racional($this->op1);
+      $op2 = new Racional($this->op2);
+      switch ($this->operador) {
+      case '+':
+      $resultado = $op1->sumar($op2);
+      break;
+      case '-':
+      $resultado = $op1->restar($op2);
+      break;
+      case '*':
+      $resultado = $op1->multiplicar($op2);
+      break;
+      case '/':
+      $resultado = $op1->dividir($op2);
+      break;
+      }
+      } else {
+      switch ($this->operador {
+      case '+':
+      $resultado = $this->op1 + $this->op2;
+      break;
+      case '-':
+      $resultado = $this->op1 - $this->op2;
+      break;
+      case '*':
+      $resultado = $this->op1 * $this->op2;
+      break;
+      case '/':
+      $resultado = $this->op1 / $this->op2;
+      break;
+      }
+      }
+      return $resultado;
+
+     */
 }

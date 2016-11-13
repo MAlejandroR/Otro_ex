@@ -56,5 +56,9 @@ class Racional {
         $op2 = $this->den * $op1->num;
         return new Racional($op1, $op2);
     }
+    
+    public function __toString() {
+        return ($this->num."/".$this->den);
+    }
 
 }
