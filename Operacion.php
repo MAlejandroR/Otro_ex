@@ -8,26 +8,48 @@ abstract class Operacion {
     protected $op1;
     protected $op2;
     protected $operador;
+    protected $operacion;
     static protected $tipo;
 
-    const RACIONAL = -1;
-    const REAL = 1;
+    const RACIONAL = 1;
+    const REAL = 2;
+    const ERROR = -1;
 
     public static function tipoOperacion($operacion) {
-        
+        self::$tipo = Operacion::ERROR;
+
         $numReal = '[0-9]+(\.[0-9]*)?';
+        $numEntero = '[0-9]+';
         $op = '[\+|\-|\*|\/]';
+        $numRacional = '[0-9]+\/[0-9]+';
+        ;
+        $opRacional = '[\+|\-|\*|\:]';
+        ;
+
 
         $exp = "/^$numReal$op$numReal$/";
         if (preg_match($exp, $operacion)) {
             self::$tipo = Operacion::REAL;
-            return Operacion::REAL;
         } else {
-            self::$tipo = Operacion::RACIONAL;
-
-
-            return Operacion::RACIONAL;
+            $r = false;
+            $exp = "/^$numRacional$opRacional$numRacional$/";
+            if (preg_match($exp, $operacion)) {
+                $r = true;
+            }
+            $exp = "/^$numRacional$opRacional$numEntero$/";
+            if (preg_match($exp, $operacion)) {
+                $r = true;
+            }
+            $exp = "/^$numEntero$opRacional$numRacional$/";
+            if (preg_match($exp, $operacion)) {
+                $r = true;
+            }
+            if ($r == TRUE) {
+                self::$tipo = Operacion::RACIONAL;
+            }
         }
+        return self::$tipo;
+
 
 
 
@@ -38,6 +60,9 @@ abstract class Operacion {
     }
 
     public function __construct($operacion) {
+
+
+        $this->operacion = $operacion;
         $this->operador = $this->obtenerOperador($operacion);
         $this->op1 = $this->obtenerOperador1($operacion);
         $this->op2 = $this->obtenerOperador2($operacion);
@@ -95,43 +120,21 @@ abstract class Operacion {
         return $this->tipo;
     }
 
+    public function __toString() {
+        return "<br />$this->op1$this->operador$this->op2 = ";
+    }
+
+    public function describe() {
+        $operacion = "<tr><th>Operando 1 </th> <th> $this->op1</th></tr>";
+        $operacion.="<tr><th>Operando 2 </th> <th> $this->op2</th></tr>";
+        $operacion.="<tr><th>Operación </th> <th> $this->operador</th></tr>";
+        if (self::$tipo == Operacion::RACIONAL)
+            $tipo = "Racional";
+        else
+            $tipo = "Real";
+        $operacion.="<tr><th>Tipo de operacion  </th> <th> $tipo</th></tr>";
+        return $operacion;
+    }
+
     abstract public function opera();
-
-    /*
-     * if ($this->tipo == $this::RACIONAL) {
-      $op1 = new Racional($this->op1);
-      $op2 = new Racional($this->op2);
-      switch ($this->operador) {
-      case '+':
-      $resultado = $op1->sumar($op2);
-      break;
-      case '-':
-      $resultado = $op1->restar($op2);
-      break;
-      case '*':
-      $resultado = $op1->multiplicar($op2);
-      break;
-      case '/':
-      $resultado = $op1->dividir($op2);
-      break;
-      }
-      } else {
-      switch ($this->operador {
-      case '+':
-      $resultado = $this->op1 + $this->op2;
-      break;
-      case '-':
-      $resultado = $this->op1 - $this->op2;
-      break;
-      case '*':
-      $resultado = $this->op1 * $this->op2;
-      break;
-      case '/':
-      $resultado = $this->op1 / $this->op2;
-      break;
-      }
-      }
-      return $resultado;
-
-     */
 }

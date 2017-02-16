@@ -37,8 +37,20 @@ class OperacionReal extends Operacion {
         }
         return $resultado;
     }
-public function __toString() {
-    return "$this->op1 $this->operador $this->op2";
-}
+
+    public function __toString() {
+        $r = parent::__toString();
+        $r.= $this->opera() . "<br />";
+        return $r;
+    }
+
+    public function describe() {
+        $r = "<table border=1><tr><th>Cocepto</th> <th>Valores</th></tr>";
+        $r .= parent::describe();
+        $r.= "<tr><th>Resultado </th><th>" . $this->opera() . "</th></tr>";
+        $r.= "</table>";
+        return $r;
+    }
+
     //put your code here
 }
